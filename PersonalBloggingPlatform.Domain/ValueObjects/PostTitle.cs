@@ -1,4 +1,6 @@
-﻿namespace PersonalBloggingPlatform.Domain.ValueObjects;
+﻿using PersonalBloggingPlatform.Domain.Exceptions;
+
+namespace PersonalBloggingPlatform.Domain.ValueObjects;
 
 public record PostTitle
 {
@@ -8,9 +10,15 @@ public record PostTitle
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            // throw exception
+            throw new EmptyPostTitleException();
         }
         Value = value;
     }
+
+    public static implicit operator string(PostTitle title) 
+        => title.Value;
+
+    public static implicit operator PostTitle(string title) 
+        => new(title);
 }
 
