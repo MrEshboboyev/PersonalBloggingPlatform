@@ -1,17 +1,18 @@
 ﻿using PersonalBloggingPlatform.Domain.ValueObjects;
+using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 using System;
 
 namespace PersonalBloggingPlatform.Domain.Entities;
 
-public class BlogPost
+public class BlogPost : AggregateRoot<BlogPostId>
 {
-    public Guid Id { get; private set; }
+    public BlogPostId Id { get; private set; }
     private PostTitle _title;
     private PostContent _content;
     private DateTime _createdAt;
     private DateTime _lastModified;
 
-    internal BlogPost(Guid id, PostTitle title, PostContent content, 
+    internal BlogPost(BlogPostId id, PostTitle title, PostContent content, 
         DateTime createdAt, DateTime lastModified)
     {
         Id = id;
