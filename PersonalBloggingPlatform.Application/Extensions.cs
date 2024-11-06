@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PersonalBloggingPlatform.Domain.Factories;
 using PersonalBloggingPlatform.Domain.Policies;
-using PersonalBloggingPlatform.Shared;
+using PersonalBloggingPlatform.Shared.Commands;
 
 namespace PersonalBloggingPlatform.Application;
 

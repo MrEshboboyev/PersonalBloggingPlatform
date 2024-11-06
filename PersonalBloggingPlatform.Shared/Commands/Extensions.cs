@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PersonalBloggingPlatform.Shared.Abstractions.Commands;
-using PersonalBloggingPlatform.Shared.Commands;
 using System.Reflection;
 
-namespace PersonalBloggingPlatform.Shared;
+namespace PersonalBloggingPlatform.Shared.Commands;
 
 public static class Extensions
 {
