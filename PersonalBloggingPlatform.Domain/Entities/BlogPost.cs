@@ -1,4 +1,5 @@
-﻿using PersonalBloggingPlatform.Domain.ValueObjects;
+﻿using PersonalBloggingPlatform.Domain.Events;
+using PersonalBloggingPlatform.Domain.ValueObjects;
 using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 using System;
 
@@ -20,6 +21,25 @@ public class BlogPost : AggregateRoot<BlogPostId>
         _content = content;
         _createdAt = createdAt;
         _lastModified = lastModified;
+    }
+
+    public void UpdateContent(PostContent newContent)
+    {
+        _content = newContent;
+        _lastModified = DateTime.Now;
+        AddEvent(new BlogPostUpdated(this));
+    }
+
+    public void UpdateTitle(PostTitle newTitle)
+    {
+        _title = newTitle;
+        _lastModified = DateTime.Now;
+        AddEvent(new BlogPostUpdated(this));
+    }
+
+    public void Delete()
+    {
+        AddEvent(new BlogPostDeleted(Id));
     }
 }
 
