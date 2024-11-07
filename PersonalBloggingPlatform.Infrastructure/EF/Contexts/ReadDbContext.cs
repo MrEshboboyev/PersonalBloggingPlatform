@@ -4,7 +4,7 @@ using PersonalBloggingPlatform.Infrastructure.EF.Models;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Contexts;
 
-internal sealed class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbContext(options)
+public sealed class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbContext(options)
 {
     public DbSet<BlogPostReadModel> BlogPosts { get; set; }
 
