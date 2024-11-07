@@ -2,6 +2,7 @@
 using PersonalBloggingPlatform.Domain.ValueObjects;
 using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 using System;
+using System.Collections.Generic;
 
 namespace PersonalBloggingPlatform.Domain.Entities;
 
@@ -12,6 +13,9 @@ public class BlogPost : AggregateRoot<BlogPostId>
     private PostContent _content;
     private DateTime _createdAt;
     private DateTime _lastModified;
+
+    private readonly LinkedList<Tag> _tags = new();
+    private Category _category;
 
     internal BlogPost(BlogPostId id, PostTitle title, PostContent content, 
         DateTime createdAt, DateTime lastModified)
