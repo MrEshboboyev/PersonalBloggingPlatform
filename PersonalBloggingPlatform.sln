@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35410.144 d17.12
+VisualStudioVersion = 17.12.35410.144
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0224AB7D-2347-4426-A738-FBA0AC70E257}"
 EndProject
@@ -18,6 +18,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalBloggingPlatform.Shared", "PersonalBloggingPlatform.Shared\PersonalBloggingPlatform.Shared.csproj", "{F976F716-2897-4015-93E1-E1BEEC6F5FDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalBloggingPlatform.Shared.Abstractions", "PersonalBloggingPlatform.Shared.Abstractions\PersonalBloggingPlatform.Shared.Abstractions.csproj", "{AF73ACF6-C152-4C09-87EC-B374CC4116DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D3084A1E-33F6-4ED5-AB1A-25DB0D445713}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalBloggingPlatform.UnitTests", "PersonalBloggingPlatform.UnitTests\PersonalBloggingPlatform.UnitTests.csproj", "{17597656-4E3B-4D82-B76C-9C5C580338C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{AF73ACF6-C152-4C09-87EC-B374CC4116DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF73ACF6-C152-4C09-87EC-B374CC4116DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF73ACF6-C152-4C09-87EC-B374CC4116DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17597656-4E3B-4D82-B76C-9C5C580338C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17597656-4E3B-4D82-B76C-9C5C580338C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17597656-4E3B-4D82-B76C-9C5C580338C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17597656-4E3B-4D82-B76C-9C5C580338C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +69,6 @@ Global
 		{7A47B3D3-F328-45A6-9621-B4D9DCD5F0D8} = {0224AB7D-2347-4426-A738-FBA0AC70E257}
 		{F976F716-2897-4015-93E1-E1BEEC6F5FDA} = {B22E7E85-8A73-4778-9B14-499261E47D78}
 		{AF73ACF6-C152-4C09-87EC-B374CC4116DD} = {B22E7E85-8A73-4778-9B14-499261E47D78}
+		{17597656-4E3B-4D82-B76C-9C5C580338C4} = {D3084A1E-33F6-4ED5-AB1A-25DB0D445713}
 	EndGlobalSection
 EndGlobal
