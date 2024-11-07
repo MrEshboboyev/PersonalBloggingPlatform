@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Repositories;
 
-internal sealed class PostgresBlogPostRepository(DbSet<BlogPost> blogPosts, 
-    WriteDbContext writeDbContext) : IBlogPostRepository
+internal sealed class PostgresBlogPostRepository(WriteDbContext writeDbContext) : IBlogPostRepository
 {
-    private readonly DbSet<BlogPost> _blogPosts = blogPosts;
+    private readonly DbSet<BlogPost> _blogPosts = writeDbContext.BlogPosts;
     private readonly WriteDbContext _writeDbContext = writeDbContext;
 
     public Task<BlogPost> GetAsync(BlogPostId id)
