@@ -23,5 +23,9 @@ public class CreateBlogPostHandler(IBlogPostRepository repository,
         {
             throw new BlogPostAlreadyExistsException(title);
         }
+
+        var blogPost = _factory.Create(id, title, content);
+
+        await _repository.CreateAsync(blogPost);
     }
 }
