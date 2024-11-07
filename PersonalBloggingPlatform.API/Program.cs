@@ -3,9 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PersonalBloggingPlatform.Application;
 using PersonalBloggingPlatform.Infrastructure;
+using PersonalBloggingPlatform.Shared;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddShared();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
