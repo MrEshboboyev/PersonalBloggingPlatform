@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PersonalBloggingPlatform.Domain.Entities;
+using PersonalBloggingPlatform.Infrastructure.EF.Config;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Contexts;
 
@@ -10,6 +11,8 @@ internal sealed class WriteDbContext(DbContextOptions<ReadDbContext> options) : 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("blogPost");
-        base.OnModelCreating(modelBuilder);
+
+        var configuration = new WriteConfiguration();
+        modelBuilder.ApplyConfiguration<BlogPost>(configuration);
     }
 }
