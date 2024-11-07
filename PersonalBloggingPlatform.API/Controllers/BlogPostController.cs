@@ -41,6 +41,14 @@ public class BlogPostController(ICommandDispatcher commandDispatcher,
         return CreatedAtAction(nameof(Get), new { id = command.Id }, null);
     }
 
+    [HttpPut]
+    public async Task<IActionResult> Put(UpdateBlogPost command)
+    {
+        await _commandDispatcher.DispatchAsync(command);
+
+        return Ok();
+    }
+
     [HttpDelete]
     public async Task<IActionResult> Delete(DeleteBlogPost command)
     {

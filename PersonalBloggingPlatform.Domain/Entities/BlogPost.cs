@@ -26,14 +26,14 @@ public class BlogPost : AggregateRoot<BlogPostId>
     public void UpdateContent(PostContent newContent)
     {
         _content = newContent;
-        _lastModified = DateTime.Now;
+        _lastModified = DateTime.UtcNow;
         AddEvent(new BlogPostUpdated(this));
     }
 
     public void UpdateTitle(PostTitle newTitle)
     {
         _title = newTitle;
-        _lastModified = DateTime.Now;
+        _lastModified = DateTime.UtcNow;
         AddEvent(new BlogPostUpdated(this));
     }
 
