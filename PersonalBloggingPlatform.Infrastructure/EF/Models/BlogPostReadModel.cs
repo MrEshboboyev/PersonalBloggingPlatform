@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Models;
 
@@ -10,5 +11,7 @@ public class BlogPostReadModel
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime LastModified { get; set; }
+    public CategoryReadModel Category { get; set; }
+    public ICollection<TagReadModel> Tags { get; set; } 
 }
 

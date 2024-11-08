@@ -1,5 +1,6 @@
 ﻿using PersonalBloggingPlatform.Application.DTO;
 using PersonalBloggingPlatform.Infrastructure.EF.Models;
+using System.Linq;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Queries;
 
@@ -12,6 +13,16 @@ internal static class Extensions
             Title = readModel.Title,
             Content = readModel.Content,
             CreatedAt = readModel.CreatedAt,
-            LastModified = readModel.LastModified
+            LastModified = readModel.LastModified,
+            Tags = readModel.Tags.Select(t => new TagDto
+            {
+                Id = t.Id,
+                Name = t.Name
+            }),
+            Category = new CategoryDto
+            { 
+                Id = readModel.Category.Id,
+                Name = readModel.Category?.Name
+            }
         };
 }
