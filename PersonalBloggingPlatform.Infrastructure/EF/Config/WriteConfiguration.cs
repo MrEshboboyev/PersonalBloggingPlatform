@@ -67,7 +67,7 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<BlogPost>,
         builder.HasMany(bp => bp.Tags)
                .WithMany()
                .UsingEntity<Dictionary<string, object>>(
-                   "BlogPostTag",                           // Join table name
+                   "BlogPostTags",                           // Join table name
                    j => j.HasOne<Tag>().WithMany().HasForeignKey("TagId"),
                    j => j.HasOne<BlogPost>().WithMany().HasForeignKey("BlogPostId")
                );

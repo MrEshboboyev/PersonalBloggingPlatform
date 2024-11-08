@@ -7,25 +7,30 @@ using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.Application.Commands.Handlers;
 
-public class CreateBlogPostHandler(IBlogPostRepository repository,
+public class CreateBlogPostHandler(IBlogPostRepository blogPostRepository,
+    ICategoryRepository categoryRepository,
     IBlogPostFactory factory,
     IBlogPostReadService readService) : ICommandHandler<CreateBlogPost>
 {
-    private readonly IBlogPostRepository _repository = repository;
+    private readonly IBlogPostRepository _blogPostRepository = blogPostRepository;
+    private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IBlogPostFactory _factory = factory;
     private readonly IBlogPostReadService _readService = readService;
 
     public async Task HandleAsync(CreateBlogPost command)
     {
-        var (title, content) = command;
+        var (title, content, categoryId) = command;
 
         if (await _readService.ExistsByTitleAsync(title))
         {
             throw new BlogPostAlreadyExistsException(title);
         }
 
-        var blogPost = _factory.Create(title, content);
+        var category = await _categoryRepository.GetAsync(categoryId)
+            ?? throw new CategoryNotFoundException(categoryId);
 
-        await _repository.CreateAsync(blogPost);
+        var blogPost = _factory.Create(title, content, categoryId);
+
+        await _blogPostRepository.CreateAsync(blogPost);
     }
 }

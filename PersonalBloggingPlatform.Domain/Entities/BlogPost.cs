@@ -29,12 +29,13 @@ public class BlogPost : AggregateRoot<Guid>
     // Private constructor for ORM support
     private BlogPost() { }
 
-    internal BlogPost(PostTitle title, PostContent content, 
+    internal BlogPost(PostTitle title, PostContent content, CategoryId categoryId,
         DateTime createdAt, DateTime lastModified)
     {
         Id = Guid.NewGuid();
         _title = title;
         _content = content;
+        _categoryId = categoryId;
         _createdAt = createdAt;
         _lastModified = lastModified;
     }

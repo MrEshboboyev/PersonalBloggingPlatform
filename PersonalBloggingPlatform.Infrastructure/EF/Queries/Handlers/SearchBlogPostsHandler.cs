@@ -27,6 +27,8 @@ internal sealed class SearchBlogPostsHandler(ReadDbContext context)
         }
 
         return await dbQuery
+            .Include(bp => bp.Tags)
+            .Include(bp => bp.Category)
             .Select(bp => bp.AsDto())
             .AsNoTracking()
             .ToListAsync();

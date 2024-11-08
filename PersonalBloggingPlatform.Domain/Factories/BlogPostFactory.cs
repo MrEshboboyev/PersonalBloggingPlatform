@@ -6,6 +6,6 @@ namespace PersonalBloggingPlatform.Domain.Factories;
 
 public sealed class BlogPostFactory : IBlogPostFactory
 {
-    public BlogPost Create(PostTitle title, PostContent content)
-        => new (title, content, DateTime.UtcNow, DateTime.UtcNow);
+    public BlogPost Create(PostTitle title, PostContent content, CategoryId categoryId)
+        => new (title, content, categoryId, DateTime.UtcNow, DateTime.UtcNow);
 }
