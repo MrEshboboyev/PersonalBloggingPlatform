@@ -7,29 +7,29 @@ using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Repositories;
 
-internal sealed class PostgresBlogPostRepository(WriteDbContext writeDbContext) : IBlogPostRepository
+internal class PostgresCategoryRepository(WriteDbContext writeDbContext) : ICategoryRepository
 {
-    private readonly DbSet<BlogPost> _blogPosts = writeDbContext.BlogPosts;
+    private readonly DbSet<Category> _categorys = writeDbContext.Categories;
     private readonly WriteDbContext _writeDbContext = writeDbContext;
 
-    public Task<BlogPost> GetAsync(Guid id)
-        => _blogPosts.SingleOrDefaultAsync(bp => bp.Id == id);
+    public Task<Category> GetAsync(Guid id)
+        => _categorys.SingleOrDefaultAsync(t => t.Id == id);
 
-    public async Task CreateAsync(BlogPost blogPost)
+    public async Task CreateAsync(Category category)
     {
-        await _blogPosts.AddAsync(blogPost);
+        await _categorys.AddAsync(category);
         await _writeDbContext.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(BlogPost blogPost)
+    public async Task UpdateAsync(Category category)
     {
-        _blogPosts.Update(blogPost);
+        _categorys.Update(category);
         await _writeDbContext.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(BlogPost blogPost)
+    public async Task DeleteAsync(Category category)
     {
-        _blogPosts.Remove(blogPost);
+        _categorys.Remove(category);
         await _writeDbContext.SaveChangesAsync();
     }
 }

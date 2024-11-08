@@ -17,14 +17,14 @@ public class CreateBlogPostHandler(IBlogPostRepository repository,
 
     public async Task HandleAsync(CreateBlogPost command)
     {
-        var (id, title, content) = command;
+        var (title, content) = command;
 
         if (await _readService.ExistsByTitleAsync(title))
         {
             throw new BlogPostAlreadyExistsException(title);
         }
 
-        var blogPost = _factory.Create(id, title, content);
+        var blogPost = _factory.Create(title, content);
 
         await _repository.CreateAsync(blogPost);
     }

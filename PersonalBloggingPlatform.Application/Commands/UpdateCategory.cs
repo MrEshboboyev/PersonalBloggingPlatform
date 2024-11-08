@@ -3,4 +3,4 @@ using System;
 
 namespace PersonalBloggingPlatform.Application.Commands;
 
-public record CreateBlogPost(string Title, string Content) : ICommand;
+public record UpdateCategory(Guid Id, string Name) : ICommand;
