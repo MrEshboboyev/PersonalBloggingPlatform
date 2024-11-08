@@ -13,6 +13,6 @@ public class BlogPostReadModel
     public DateTime LastModified { get; set; }
     public Guid CategoryId { get; set; }
     public CategoryReadModel Category { get; set; }
-    public ICollection<TagReadModel> Tags { get; set; } 
+    public ICollection<TagReadModel> Tags { get; set; } = [];
 }
 

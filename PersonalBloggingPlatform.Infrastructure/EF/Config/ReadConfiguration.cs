@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalBloggingPlatform.Infrastructure.EF.Models;
 using System;
+using System.Collections.Generic;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Config;
 
@@ -26,11 +27,13 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
             .HasForeignKey("CategoryId")
             .OnDelete(DeleteBehavior.Restrict); // Ensures that deleting a category doesn't delete blog posts
 
-        // Configure Tags as a one-to-many relationship with BlogPostReadModel
-        builder
-            .HasMany(bp => bp.Tags)
-            .WithOne(t => t.BlogPost)
-            .HasForeignKey(t => t.BlogPostId);
+        builder.HasMany(bp => bp.Tags)
+               .WithMany()  // No navigation property in TagReadModel
+               .UsingEntity<Dictionary<string, object>>(
+                   "BlogPostTags",
+                   j => j.HasOne<TagReadModel>().WithMany().HasForeignKey("TagId"),
+                   j => j.HasOne<BlogPostReadModel>().WithMany().HasForeignKey("BlogPostId")
+               );
     }
 
     public void Configure(EntityTypeBuilder<TagReadModel> builder)
@@ -38,13 +41,6 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
         // Configure Tags table
         builder.ToTable("Tags");
         builder.HasKey(t => t.Id);
-
-        // Foreign key relationship with BlogPostReadModel
-        builder
-            .HasOne(t => t.BlogPost)
-            .WithMany(bp => bp.Tags)
-            .HasForeignKey(t => t.BlogPostId)
-            .IsRequired();
     }
 
     public void Configure(EntityTypeBuilder<CategoryReadModel> builder)

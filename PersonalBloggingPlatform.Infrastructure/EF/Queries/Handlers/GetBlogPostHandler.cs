@@ -16,10 +16,10 @@ public class GetBlogPostHandler(ReadDbContext context)
 
     public Task<BlogPostDto> HandleAsync(GetBlogPost query)
         => _blogPosts
-            .Include(bp => bp.Tags)
-            .Include(bp => bp.Category)
-            .Where(bp => bp.Id == query.Id)
-            .Select(bp => bp.AsDto())
+            .Include(bp => bp.Tags)         // Include tags in the query
+            .Include(bp => bp.Category)     // Include category in the query
             .AsNoTracking()
+            .Where(bp => bp.Id == query.Id)
+            .Select(bp => bp.AsDto())       // Project to BlogPostDto
             .SingleOrDefaultAsync();
 }
