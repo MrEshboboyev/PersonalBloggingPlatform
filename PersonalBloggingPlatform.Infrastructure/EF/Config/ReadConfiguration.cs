@@ -25,12 +25,6 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
             .HasMany(bp => bp.Tags)
             .WithOne(t => t.BlogPost)
             .HasForeignKey(t => t.BlogPostId);
-
-        // Define one-to-many relationship with CategoryReadModel (optional, if Category is a reference)
-        builder
-            .HasOne(bp => bp.Category)
-            .WithMany(c => c.BlogPosts)
-            .HasForeignKey(bp => bp.CategoryId);
     }
 
     public void Configure(EntityTypeBuilder<TagReadModel> builder)
@@ -52,11 +46,5 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
         // Configure Categories table
         builder.ToTable("Categories");
         builder.HasKey(c => c.Id);
-
-        // Define reverse relationship with BlogPostReadModel
-        builder
-            .HasMany(c => c.BlogPosts)
-            .WithOne(bp => bp.Category)
-            .HasForeignKey(bp => bp.CategoryId);
     }
 }

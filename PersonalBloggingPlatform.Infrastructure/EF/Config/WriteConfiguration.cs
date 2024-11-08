@@ -53,7 +53,7 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<BlogPost>,
         builder.HasMany(typeof(Tag), "_tags");
 
         // Configure relationship to Category (one-to-one or many-to-one)
-        builder.HasOne(typeof(Category), "_categories");
+        builder.HasOne(typeof(Category), "_category");
     }
 
     public void Configure(EntityTypeBuilder<Tag> builder)

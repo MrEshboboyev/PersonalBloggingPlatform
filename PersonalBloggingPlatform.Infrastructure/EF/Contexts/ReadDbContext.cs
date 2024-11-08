@@ -14,6 +14,8 @@ public sealed class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbC
 
         var configuration = new ReadConfiguration();
         modelBuilder.ApplyConfiguration<BlogPostReadModel>(configuration);
+        modelBuilder.ApplyConfiguration<TagReadModel>(configuration);
+        modelBuilder.ApplyConfiguration<CategoryReadModel>(configuration);
 
         base.OnModelCreating(modelBuilder);
     }
