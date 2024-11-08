@@ -11,6 +11,7 @@ public class BlogPostReadModel
     public string Content { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime LastModified { get; set; }
+    public Guid CategoryId { get; set; }
     public CategoryReadModel Category { get; set; }
     public ICollection<TagReadModel> Tags { get; set; } 
 }
