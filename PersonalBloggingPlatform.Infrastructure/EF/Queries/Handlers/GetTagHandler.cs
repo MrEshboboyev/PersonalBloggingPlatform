@@ -9,17 +9,15 @@ using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Queries.Handlers;
 
-public class GetBlogPostHandler(ReadDbContext context)
-    : IQueryHandler<GetBlogPost, BlogPostDto>
+public class GetTagHandler(ReadDbContext context)
+    : IQueryHandler<GetTag, TagDto>
 {
-    private readonly DbSet<BlogPostReadModel> _blogPosts = context.BlogPosts;
+    private readonly DbSet<TagReadModel> _tags = context.Tags;
 
-    public Task<BlogPostDto> HandleAsync(GetBlogPost query)
-        => _blogPosts
-            .Include(bp => bp.Tags)
-            .Include(bp => bp.Category)
-            .Where(bp => bp.Id == query.Id)
-            .Select(bp => bp.AsDto())
+    public Task<TagDto> HandleAsync(GetTag query)
+        => _tags
+            .Where(t => t.Id == query.Id)
+            .Select(t => t.AsDto())
             .AsNoTracking()
             .SingleOrDefaultAsync();
 }

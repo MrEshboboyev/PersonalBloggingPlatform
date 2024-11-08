@@ -25,4 +25,18 @@ internal static class Extensions
                 Name = readModel.Category?.Name
             }
         };
+
+    public static TagDto AsDto(this TagReadModel readModel)
+        => new()
+        {
+            Id = readModel.Id,
+            Name = readModel?.Name
+        };
+
+    public static CategoryDto AsDto(this CategoryReadModel readModel)
+        => new()
+        {
+            Id = readModel.Id,
+            Name = readModel?.Name
+        };
 }
