@@ -4,5 +4,5 @@ using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 
 namespace PersonalBloggingPlatform.Domain.Events;
 
-public record BlogPostCategoryIsSet(BlogPost BlogPost, Category Category) : IDomainEvent;
+public record BlogPostCategoryIsSet(BlogPost BlogPost, CategoryId CategoryId) : IDomainEvent;
 

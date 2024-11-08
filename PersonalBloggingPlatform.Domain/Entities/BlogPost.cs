@@ -8,21 +8,31 @@ using System.Linq;
 
 namespace PersonalBloggingPlatform.Domain.Entities;
 
-public class BlogPost : AggregateRoot<BlogPostId>
+public class BlogPost : AggregateRoot<Guid>
 {
-    public BlogPostId Id { get; private set; }
     private PostTitle _title;
     private PostContent _content;
-    private DateTime _createdAt;
+    private readonly DateTime _createdAt;
     private DateTime _lastModified;
 
-    private readonly LinkedList<Tag> _tags = new();
-    private Category _category;
+    private readonly List<Tag> _tags = [];
+    private CategoryId _categoryId;
 
-    internal BlogPost(BlogPostId id, PostTitle title, PostContent content, 
+    // Public getters for properties
+    public PostTitle Title => _title;
+    public PostContent Content => _content;
+    public DateTime CreatedAt => _createdAt;
+    public DateTime LastModified => _lastModified;
+    public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
+    public CategoryId CategoryId => _categoryId;
+
+    // Private constructor for ORM support
+    private BlogPost() { }
+
+    internal BlogPost(PostTitle title, PostContent content, 
         DateTime createdAt, DateTime lastModified)
     {
-        Id = id;
+        Id = Guid.NewGuid();
         _title = title;
         _content = content;
         _createdAt = createdAt;
@@ -57,7 +67,7 @@ public class BlogPost : AggregateRoot<BlogPostId>
             throw new BlogPostTagAlreadyExistsException(_title, tag.Name);
         }
 
-        _tags.AddLast(tag);
+        _tags.Add(tag);
         AddEvent(new BlogPostTagAdded(this, tag));
     }
 
@@ -76,9 +86,9 @@ public class BlogPost : AggregateRoot<BlogPostId>
         return tag;
     }
 
-    public void SetCategory(Category category)
+    public void SetCategory(CategoryId categoryId)
     {
-        _category = category;
-        AddEvent(new BlogPostCategoryIsSet(this, category));
+        _categoryId = categoryId;
+        AddEvent(new BlogPostCategoryIsSet(this, categoryId));
     }
 }

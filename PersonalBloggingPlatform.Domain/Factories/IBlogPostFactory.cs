@@ -5,5 +5,5 @@ namespace PersonalBloggingPlatform.Domain.Factories;
 
 public interface IBlogPostFactory
 {
-    BlogPost Create(BlogPostId id, PostTitle title, PostContent content);
+    BlogPost Create(PostTitle title, PostContent content);
 }

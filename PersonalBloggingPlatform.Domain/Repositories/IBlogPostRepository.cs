@@ -1,12 +1,12 @@
 ﻿using PersonalBloggingPlatform.Domain.Entities;
-using PersonalBloggingPlatform.Domain.ValueObjects;
+using System;
 using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.Domain.Repositories;
 
 public interface IBlogPostRepository
 {
-    Task<BlogPost> GetAsync(BlogPostId id);
+    Task<BlogPost> GetAsync(Guid id);
     Task CreateAsync(BlogPost blogPost);
     Task UpdateAsync(BlogPost blogPost);
     Task DeleteAsync(BlogPost blogPost);
