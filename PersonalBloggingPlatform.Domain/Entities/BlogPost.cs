@@ -1,8 +1,10 @@
 ﻿using PersonalBloggingPlatform.Domain.Events;
+using PersonalBloggingPlatform.Domain.Exceptions;
 using PersonalBloggingPlatform.Domain.ValueObjects;
 using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PersonalBloggingPlatform.Domain.Entities;
 
@@ -45,5 +47,38 @@ public class BlogPost : AggregateRoot<BlogPostId>
     {
         AddEvent(new BlogPostDeleted(Id));
     }
-}
 
+    public void AddTag(Tag tag)
+    {
+        var alreadyExists = _tags.Contains(tag);
+
+        if (alreadyExists)
+        {
+            throw new BlogPostTagAlreadyExistsException(_title, tag.Name);
+        }
+
+        _tags.AddLast(tag);
+        AddEvent(new BlogPostTagAdded(this, tag));
+    }
+
+    public void RemoveTag(Tag Tag)
+    {
+        var tag = GetTag(Tag.Name);
+        _tags.Remove(tag);
+        AddEvent(new BlogPostTagRemoved(this, tag));
+    }
+
+    private Tag GetTag(string tagName)
+    {
+        var tag = _tags.SingleOrDefault(t => t.Name == tagName)
+            ?? throw new BlogPostTagNotFoundException(tagName);
+
+        return tag;
+    }
+
+    public void SetCategory(Category category)
+    {
+        _category = category;
+        AddEvent(new BlogPostCategoryIsSet(this, category));
+    }
+}
