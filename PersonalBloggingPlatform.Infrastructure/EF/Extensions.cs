@@ -18,7 +18,11 @@ internal static class Extensions
     {
         // adding lifetimes
         services.AddScoped<IBlogPostRepository, PostgresBlogPostRepository>();
+        services.AddScoped<ITagRepository, PostgresTagRepository>();
+        services.AddScoped<ICategoryRepository, PostgresCategoryRepository>();
         services.AddScoped<IBlogPostReadService, PostgresBlogPostReadService>();
+        services.AddScoped<ITagReadService, PostgresTagReadService>();
+        services.AddScoped<ICategoryReadService, PostgresCategoryReadService>();
 
         var options = configuration.GetOptions<PostgresOptions>("Postgres");
         services.AddDbContext<ReadDbContext>(ctx => 

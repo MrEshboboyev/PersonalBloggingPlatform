@@ -11,6 +11,8 @@ public static class Extensions
     {
         services.AddCommands();
         services.AddSingleton<IBlogPostFactory, BlogPostFactory>();
+        services.AddSingleton<ITagFactory, TagFactory>();
+        services.AddSingleton<ICategoryFactory, CategoryFactory>();
 
         services.Scan(b => b.FromAssemblies(typeof(IBlogPostPolicy).Assembly)
             .AddClasses(c => c.AssignableTo<IBlogPostPolicy>())
