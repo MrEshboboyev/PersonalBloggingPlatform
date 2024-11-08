@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PersonalBloggingPlatform.Infrastructure.EF.Models;
+using System;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Config;
 
@@ -14,13 +15,18 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
         builder.ToTable("BlogPosts");
         builder.HasKey(bp => bp.Id);
 
-        // Map Category as a string column (assumes Category is an enum or similar)
+        // Configure Category as a foreign key (many-to-one relationship)
         builder
-            .Property(bp => bp.Category)
-            .HasConversion(c => c.ToString(), c => new CategoryReadModel(c))
+            .Property<Guid>("CategoryId") // CategoryId as a foreign key
             .IsRequired();
 
-        // Define one-to-many relationship with TagReadModel
+        builder
+            .HasOne(bp => bp.Category)
+            .WithMany(c => c.BlogPosts)
+            .HasForeignKey("CategoryId")
+            .OnDelete(DeleteBehavior.Restrict); // Ensures that deleting a category doesn't delete blog posts
+
+        // Configure Tags as a one-to-many relationship with BlogPostReadModel
         builder
             .HasMany(bp => bp.Tags)
             .WithOne(t => t.BlogPost)
@@ -33,7 +39,7 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
         builder.ToTable("Tags");
         builder.HasKey(t => t.Id);
 
-        // Define foreign key relationship with BlogPostReadModel
+        // Foreign key relationship with BlogPostReadModel
         builder
             .HasOne(t => t.BlogPost)
             .WithMany(bp => bp.Tags)
@@ -46,5 +52,10 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
         // Configure Categories table
         builder.ToTable("Categories");
         builder.HasKey(c => c.Id);
+
+        // Configure Category properties, if needed
+        builder.Property(c => c.Name)
+            .HasMaxLength(100) // Example length limit
+            .IsRequired();
     }
 }

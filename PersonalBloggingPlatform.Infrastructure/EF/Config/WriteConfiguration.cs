@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PersonalBloggingPlatform.Domain.Entities;
 using PersonalBloggingPlatform.Domain.ValueObjects;
 using System;
+using System.Collections.Generic;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Config;
 
@@ -13,64 +14,94 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<BlogPost>,
 {
     public void Configure(EntityTypeBuilder<BlogPost> builder)
     {
-        // Configure BlogPost table
+        // Configure BlogPosts table
         builder.ToTable("BlogPosts");
         builder.HasKey(bp => bp.Id);
 
-        // Converters for custom value objects
-        var blogPostTitleConverter = new ValueConverter<PostTitle, string>(pt => pt.Value,
-            pt => new PostTitle(pt));
-        var blogPostContentConverter = new ValueConverter<PostContent, string>(pc => pc.Value, 
-            pc => new PostContent(pc));
+        // Value converters for custom value objects
+        var blogPostTitleConverter = new ValueConverter<PostTitle, string>(
+            pt => pt.Value,
+            pt => new PostTitle(pt)
+        );
 
-        // Id property conversion
+        var blogPostContentConverter = new ValueConverter<PostContent, string>(
+            pc => pc.Value,
+            pc => new PostContent(pc)
+        );
+
+        var categoryIdConverter = new ValueConverter<CategoryId, Guid>(
+            ci => ci.Value,
+            ci => new CategoryId(ci)
+        );
+
         builder.Property(bp => bp.Id)
-            .HasConversion(id => id.Value, id => new BlogPostId(id))
             .IsRequired();
 
-        // Title property conversion
-        builder.Property<PostTitle>("_title")
+        // Configure Title and Content with converters
+        builder.Property(bp => bp.Title)
             .HasConversion(blogPostTitleConverter)
             .HasColumnName("Title")
             .IsRequired();
 
-        // Content property conversion
-        builder.Property<PostContent>("_content")
+        builder.Property(bp => bp.Content)
             .HasConversion(blogPostContentConverter)
             .HasColumnName("Content")
             .IsRequired();
 
-        // Mapping CreatedAt and LastModified as DateTime columns
-        builder.Property("_createdAt")
+        // Configure CreatedAt and LastModified as DateTime columns
+        builder.Property(bp => bp.CreatedAt)
             .HasColumnName("CreatedAt")
             .IsRequired();
 
-        builder.Property("_lastModified")
+        builder.Property(bp => bp.LastModified)
             .HasColumnName("LastModified")
             .IsRequired();
 
-        // Configure relationship to Tags (one-to-many)
-        builder.HasMany(typeof(Tag), "_tags");
+        // Configure CategoryId as a foreign key using CategoryId value object
+        builder.Property(bp => bp.CategoryId)
+            .HasConversion(categoryIdConverter)
+            .HasColumnName("CategoryId")
+            .IsRequired();
 
-        // Configure relationship to Category (one-to-one or many-to-one)
-        builder.HasOne(typeof(Category), "_category");
+        // Configure relationship with Tag via join table for many-to-many
+        builder.HasMany(bp => bp.Tags)
+               .WithMany()
+               .UsingEntity<Dictionary<string, object>>(
+                   "BlogPostTag",                           // Join table name
+                   j => j.HasOne<Tag>().WithMany().HasForeignKey("TagId"),
+                   j => j.HasOne<BlogPost>().WithMany().HasForeignKey("BlogPostId")
+               );
     }
 
     public void Configure(EntityTypeBuilder<Tag> builder)
     {
-        builder.Property<Guid>("Id");
-        // Configure Tag properties
-        builder.Property(t => t.Name);
         // Configure Tags table
         builder.ToTable("Tags");
+        builder.HasKey(t => t.Id);
+
+        // Configure Tag properties with a ValueConverter for TagName
+        var tagNameConverter = new ValueConverter<TagName, string>(tn => tn.Value, 
+            tn => new TagName(tn));
+
+        builder.Property<TagName>("_name")
+               .HasConversion(tagNameConverter)
+               .HasColumnName("Name")
+               .IsRequired();
     }
 
     public void Configure(EntityTypeBuilder<Category> builder)
     {
-        builder.Property<Guid>("Id");
-        // Configure Category properties
-        builder.Property(c => c.Name);
         // Configure Categories table
         builder.ToTable("Categories");
+        builder.HasKey(c => c.Id);
+
+        // Configure Category properties with a ValueConverter for CategoryName
+        var categoryNameConverter = new ValueConverter<CategoryName, string>(cn => cn.Value, 
+            cn => new CategoryName(cn));
+
+        builder.Property<CategoryName>("_name")
+               .HasConversion(categoryNameConverter)
+               .HasColumnName("Name")
+               .IsRequired();
     }
 }
