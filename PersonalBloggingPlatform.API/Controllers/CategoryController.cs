@@ -11,14 +11,14 @@ namespace PersonalBloggingPlatform.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class BlogPostController(ICommandDispatcher commandDispatcher, 
+public class CategoryController(ICommandDispatcher commandDispatcher, 
     IQueryDispatcher queryDispatcher) : BaseController
 {
     private readonly ICommandDispatcher _commandDispatcher = commandDispatcher;
     private readonly IQueryDispatcher _queryDispatcher = queryDispatcher;
 
     [HttpGet("{id:guid}")]
-    public async Task<ActionResult<BlogPostDto>> Get([FromRoute] GetBlogPost query)
+    public async Task<ActionResult<CategoryDto>> Get([FromRoute] GetCategory query)
     {
         var result = await _queryDispatcher.QueryAsync(query);
 
@@ -26,7 +26,7 @@ public class BlogPostController(ICommandDispatcher commandDispatcher,
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<BlogPostDto>>> Get([FromQuery] SearchBlogPosts query)
+    public async Task<ActionResult<IEnumerable<CategoryDto>>> Get([FromQuery] SearchCategories query)
     {
         var result = await _queryDispatcher.QueryAsync(query);
 
@@ -34,7 +34,7 @@ public class BlogPostController(ICommandDispatcher commandDispatcher,
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post(CreateBlogPost command)
+    public async Task<IActionResult> Post(CreateCategory command)
     {
         await _commandDispatcher.DispatchAsync(command);
 
@@ -42,15 +42,7 @@ public class BlogPostController(ICommandDispatcher commandDispatcher,
     }
 
     [HttpPut]
-    public async Task<IActionResult> Put(UpdateBlogPost command)
-    {
-        await _commandDispatcher.DispatchAsync(command);
-
-        return Ok();
-    }
-
-    [HttpDelete]
-    public async Task<IActionResult> Delete(DeleteBlogPost command)
+    public async Task<IActionResult> Put(UpdateCategory command)
     {
         await _commandDispatcher.DispatchAsync(command);
 
