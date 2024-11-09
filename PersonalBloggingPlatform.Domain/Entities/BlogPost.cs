@@ -38,6 +38,9 @@ public class BlogPost : AggregateRoot<Guid>
         _categoryId = categoryId;
         _createdAt = createdAt;
         _lastModified = lastModified;
+
+        // Raise the BlogPostCreated event
+        AddEvent(new BlogPostCreated(this));
     }
 
     public void UpdateContent(PostContent newContent)
@@ -54,11 +57,6 @@ public class BlogPost : AggregateRoot<Guid>
         AddEvent(new BlogPostUpdated(this));
     }
 
-    public void Delete()
-    {
-        AddEvent(new BlogPostDeleted(Id));
-    }
-
     public void AddTag(Tag tag)
     {
         var alreadyExists = _tags.Contains(tag);
@@ -69,14 +67,14 @@ public class BlogPost : AggregateRoot<Guid>
         }
 
         _tags.Add(tag);
-        AddEvent(new BlogPostTagAdded(this, tag));
+        AddEvent(new TagAddedToBlogPost(this, tag));
     }
 
     public void RemoveTag(Tag Tag)
     {
         var tag = GetTag(Tag.Name);
         _tags.Remove(tag);
-        AddEvent(new BlogPostTagRemoved(this, tag));
+        AddEvent(new TagRemovedFromBlogPost(this, tag));
     }
 
     private Tag GetTag(string tagName)
@@ -87,9 +85,9 @@ public class BlogPost : AggregateRoot<Guid>
         return tag;
     }
 
-    public void SetCategory(CategoryId categoryId)
+    public void ChangeCategory(CategoryId categoryId)
     {
         _categoryId = categoryId;
-        AddEvent(new BlogPostCategoryIsSet(this, categoryId));
+        AddEvent(new BlogPostCategoryChanged(this, categoryId));
     }
 }

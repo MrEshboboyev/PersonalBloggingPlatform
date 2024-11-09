@@ -1,4 +1,5 @@
-﻿using PersonalBloggingPlatform.Domain.ValueObjects;
+﻿using PersonalBloggingPlatform.Domain.Events;
+using PersonalBloggingPlatform.Domain.ValueObjects;
 using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 using System;
 
@@ -18,10 +19,13 @@ public class Tag : AggregateRoot<Guid>
     {
         Id = Guid.NewGuid();
         _name = name;
+
+        AddEvent(new TagCreated(this));
     }
 
     public void UpdateName(TagName newName)
     {
         _name = newName;
+        AddEvent(new TagUpdated(this));
     }
 }

@@ -21,7 +21,7 @@ public class ChangeBlogPostCategoryHandler(IBlogPostRepository blogPostRepositor
         var category = await _categoryRepository.GetAsync(categoryId)
             ?? throw new CategoryNotFoundException(categoryId);
 
-        blogPost.SetCategory(categoryId);
+        blogPost.ChangeCategory(categoryId);
 
         await _blogPostRepository.UpdateAsync(blogPost);
     }

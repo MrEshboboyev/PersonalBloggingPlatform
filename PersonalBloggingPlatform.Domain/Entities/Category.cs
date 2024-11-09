@@ -1,4 +1,5 @@
-﻿using PersonalBloggingPlatform.Domain.ValueObjects;
+﻿using PersonalBloggingPlatform.Domain.Events;
+using PersonalBloggingPlatform.Domain.ValueObjects;
 using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 using System;
 
@@ -18,10 +19,13 @@ public class Category : AggregateRoot<Guid>
     {
         Id = Guid.NewGuid();
         _name = name;
+
+        AddEvent(new CategoryCreated(this));
     }
 
     public void UpdateName(CategoryName newName)
     {
         _name = newName;
+        AddEvent(new CategoryUpdated(this));
     }
 }

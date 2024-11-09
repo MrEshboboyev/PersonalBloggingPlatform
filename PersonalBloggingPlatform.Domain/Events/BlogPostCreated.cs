@@ -3,5 +3,4 @@ using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 
 namespace PersonalBloggingPlatform.Domain.Events;
 
-public record BlogPostAdded(BlogPost BlogPost) : IDomainEvent;
-
+public record BlogPostCreated(BlogPost BlogPost) : IDomainEvent;
