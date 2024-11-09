@@ -13,7 +13,9 @@ internal sealed class PostgresBlogPostRepository(WriteDbContext writeDbContext) 
     private readonly WriteDbContext _writeDbContext = writeDbContext;
 
     public Task<BlogPost> GetAsync(Guid id)
-        => _blogPosts.SingleOrDefaultAsync(bp => bp.Id == id);
+        => _blogPosts
+            .Include(bp => bp.Tags)
+            .SingleOrDefaultAsync(bp => bp.Id == id);
 
     public async Task CreateAsync(BlogPost blogPost)
     {

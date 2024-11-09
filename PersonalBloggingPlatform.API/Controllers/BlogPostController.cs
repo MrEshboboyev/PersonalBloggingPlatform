@@ -4,6 +4,7 @@ using PersonalBloggingPlatform.Application.DTO;
 using PersonalBloggingPlatform.Application.Queries;
 using PersonalBloggingPlatform.Shared.Abstractions.Commands;
 using PersonalBloggingPlatform.Shared.Abstractions.Queries;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -54,6 +55,33 @@ public class BlogPostController(ICommandDispatcher commandDispatcher,
     {
         await _commandDispatcher.DispatchAsync(command);
 
+        return Ok();
+    }
+
+    // New Route for Adding a Tag to BlogPost
+    [HttpPost("{blogPostId:guid}/tags/{tagId:guid}")]
+    public async Task<IActionResult> AddTag([FromRoute] AddTagToBlogPost command)
+    {
+        //var command = new AddTagToBlogPostCommand(id, tagId);
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+
+    // Removing a Tag from BlogPost
+    [HttpDelete("{blogPostId:guid}/tags/{tagId:guid}")]
+    public async Task<IActionResult> RemoveTag([FromRoute] RemoveTagFromBlogPost command)
+    {
+        //var command = new RemoveTagFromBlogPostCommand(id, tagId);
+        await _commandDispatcher.DispatchAsync(command);
+        return Ok();
+    }
+
+    // Changing the Category of BlogPost
+    [HttpPut("{blogPostId:guid}/category/{newCategoryId:guid}")]
+    public async Task<IActionResult> ChangeCategory([FromRoute] ChangeBlogPostCategory command)
+    {
+        //var command = new ChangeBlogPostCategoryCommand(id, newCategoryId);
+        await _commandDispatcher.DispatchAsync(command);
         return Ok();
     }
 }
