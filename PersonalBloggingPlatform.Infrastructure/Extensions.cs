@@ -23,7 +23,7 @@ public static class Extensions
 
         // add JwtOptions configuring
         services.AddScoped<IJwtProvider, JwtProvider>();
-        services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
+        configuration.GetSection("JwtOptions").Get<JwtOptions>();
         return services;
     }
 }
