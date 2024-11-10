@@ -24,6 +24,9 @@ public static class Extensions
         // add JwtOptions configuring
         services.AddScoped<IJwtProvider, JwtProvider>();
         configuration.GetSection("JwtOptions").Get<JwtOptions>();
+
+        services.AddScoped<IPasswordHasher, PasswordHasher>();
+
         return services;
     }
 }
