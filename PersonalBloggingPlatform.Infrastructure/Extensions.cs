@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PersonalBloggingPlatform.Infrastructure.Auth;
+using PersonalBloggingPlatform.Infrastructure.Configuration;
 using PersonalBloggingPlatform.Infrastructure.EF;
 using PersonalBloggingPlatform.Infrastructure.Logging;
+using PersonalBloggingPlatform.Shared.Abstractions.Auth;
 using PersonalBloggingPlatform.Shared.Abstractions.Commands;
 using PersonalBloggingPlatform.Shared.Queries;
 
@@ -18,6 +21,9 @@ public static class Extensions
         services.TryDecorate(typeof(ICommandHandler<>), 
             typeof(LoggingCommandHandlerDecorator<>));
 
+        // add JwtOptions configuring
+        services.AddScoped<IJwtProvider, JwtProvider>();
+        services.Configure<JwtOptions>(configuration.GetSection("JwtSettings"));
         return services;
     }
 }
