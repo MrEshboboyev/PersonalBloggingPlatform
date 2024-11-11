@@ -33,7 +33,7 @@ public class JwtProvider(IOptions<JwtOptions> jwtOptions) : IJwtProvider
             Audience = _jwtOptions.Audience,
             Issuer = _jwtOptions.Issuer,
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(7),
+            Expires = DateTime.Now.AddMinutes(_jwtOptions.ExpirationMinutes),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                 SecurityAlgorithms.HmacSha256Signature)
         };
