@@ -20,6 +20,7 @@ internal static class Extensions
         services.AddScoped<IBlogPostRepository, PostgresBlogPostRepository>();
         services.AddScoped<ITagRepository, PostgresTagRepository>();
         services.AddScoped<ICategoryRepository, PostgresCategoryRepository>();
+        services.AddScoped<IUserRepository, PostgresUserRepository>();
         services.AddScoped<IBlogPostReadService, PostgresBlogPostReadService>();
         services.AddScoped<ITagReadService, PostgresTagReadService>();
         services.AddScoped<ICategoryReadService, PostgresCategoryReadService>();
