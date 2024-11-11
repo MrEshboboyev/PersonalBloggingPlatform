@@ -39,4 +39,12 @@ public class User : AggregateRoot<Guid>
 
         AddEvent(new UserPasswordChanged(this));
     }
+
+    public void AddRole(Role role)
+    {
+        if (!_roles.Contains(role))
+        {
+            _roles.Add(role);
+        }
+    }
 }

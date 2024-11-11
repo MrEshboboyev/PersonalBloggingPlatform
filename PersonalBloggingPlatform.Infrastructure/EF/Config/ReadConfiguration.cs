@@ -8,7 +8,9 @@ namespace PersonalBloggingPlatform.Infrastructure.EF.Config;
 
 internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadModel>,
                                           IEntityTypeConfiguration<TagReadModel>,
-                                          IEntityTypeConfiguration<CategoryReadModel>
+                                          IEntityTypeConfiguration<CategoryReadModel>,
+                                          IEntityTypeConfiguration<UserReadModel>,
+                                          IEntityTypeConfiguration<RoleReadModel>
 {
     public void Configure(EntityTypeBuilder<BlogPostReadModel> builder)
     {
@@ -53,5 +55,26 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
         builder.Property(c => c.Name)
             .HasMaxLength(100) // Example length limit
             .IsRequired();
+    }
+
+    public void Configure(EntityTypeBuilder<UserReadModel> builder)
+    {
+        builder.ToTable("Users");
+        builder.HasKey(u => u.Id);
+
+        // Many-to-many relationship with Role via UserRoles join table
+        builder.HasMany(u => u.Roles)
+               .WithMany()
+               .UsingEntity<Dictionary<string, object>>(
+                   "UserRoles",
+                   j => j.HasOne<RoleReadModel>().WithMany().HasForeignKey("RoleId"),
+                   j => j.HasOne<UserReadModel>().WithMany().HasForeignKey("UserId")
+               );
+    }
+
+    public void Configure(EntityTypeBuilder<RoleReadModel> builder)
+    {
+        builder.ToTable("Roles");
+        builder.HasKey(r => r.Id);
     }
 }

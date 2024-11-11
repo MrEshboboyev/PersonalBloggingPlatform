@@ -9,6 +9,8 @@ public sealed class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbC
     public DbSet<BlogPostReadModel> BlogPosts { get; set; }
     public DbSet<TagReadModel> Tags { get; set; }
     public DbSet<CategoryReadModel> Categories { get; set; }
+    public DbSet<UserReadModel> Users { get; set; }
+    public DbSet<RoleReadModel> Roles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +21,8 @@ public sealed class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbC
         modelBuilder.ApplyConfiguration<BlogPostReadModel>(configuration);
         modelBuilder.ApplyConfiguration<TagReadModel>(configuration);
         modelBuilder.ApplyConfiguration<CategoryReadModel>(configuration);
+        modelBuilder.ApplyConfiguration<UserReadModel>(configuration);
+        modelBuilder.ApplyConfiguration<RoleReadModel>(configuration);
 
         base.OnModelCreating(modelBuilder);
     }

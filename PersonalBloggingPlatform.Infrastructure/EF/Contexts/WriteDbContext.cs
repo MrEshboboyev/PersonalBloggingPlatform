@@ -9,6 +9,8 @@ internal sealed class WriteDbContext(DbContextOptions<WriteDbContext> options) :
     public DbSet<BlogPost> BlogPosts { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<Category> Categories { get; set; }
+    public DbSet<User> Users { get; set; }
+    public DbSet<Role> Roles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,6 +21,8 @@ internal sealed class WriteDbContext(DbContextOptions<WriteDbContext> options) :
         modelBuilder.ApplyConfiguration<BlogPost>(configuration);
         modelBuilder.ApplyConfiguration<Tag>(configuration);
         modelBuilder.ApplyConfiguration<Category>(configuration);
+        modelBuilder.ApplyConfiguration<User>(configuration);
+        modelBuilder.ApplyConfiguration<Role>(configuration);
 
         base.OnModelCreating(modelBuilder);
     }
