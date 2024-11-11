@@ -21,10 +21,7 @@ public static class Extensions
         services.TryDecorate(typeof(ICommandHandler<>), 
             typeof(LoggingCommandHandlerDecorator<>));
 
-        // add JwtOptions configuring
         services.AddScoped<IJwtProvider, JwtProvider>();
-        configuration.GetSection("JwtOptions").Get<JwtOptions>();
-
         services.AddScoped<IPasswordHasher, PasswordHasher>();
 
         return services;

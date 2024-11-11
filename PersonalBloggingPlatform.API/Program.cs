@@ -18,6 +18,10 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+
+// add JwtOptions configuring
+builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

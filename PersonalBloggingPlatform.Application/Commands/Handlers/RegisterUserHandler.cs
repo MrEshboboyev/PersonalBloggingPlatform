@@ -21,7 +21,7 @@ internal class RegisterUserHandler(IUserRepository userRepository,
     public async Task HandleAsync(RegisterUser command)
     {
         var (username, email, password) = command;
-        
+
         var userFromDb = await _userRepository.GetByUsernameAsync(username);
 
         if (userFromDb != null)
@@ -32,10 +32,10 @@ internal class RegisterUserHandler(IUserRepository userRepository,
         var passwordHash = _passwordHasher.Hash(password);
         var user = _userFactory.Create(username, email, passwordHash);
 
-        // add "Reader" role for new user 
-        var role = _roleFactory.Create(new RoleName(SD.Role_Reader));
+        //// add "Reader" role for new user 
+        //var role = _roleFactory.Create(new RoleName(SD.Role_Reader));
 
-        user.AddRole(role);
+        //user.AddRole(role);
 
         await _userRepository.AddAsync(user);
     }

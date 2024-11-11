@@ -8,11 +8,9 @@ namespace PersonalBloggingPlatform.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class AuthController(ICommandDispatcher commandDispatcher,
-    IJwtProvider jwtProvider) : ControllerBase
+public class AuthController(ICommandDispatcher commandDispatcher) : ControllerBase
 {
     private readonly ICommandDispatcher _commandDispatcher = commandDispatcher;
-    private readonly IJwtProvider _jwtProvider = jwtProvider;
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUser command)

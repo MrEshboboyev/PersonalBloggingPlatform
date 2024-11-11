@@ -8,7 +8,7 @@ public record PasswordHash
 
     public PasswordHash(string value)
     {
-        if (!string.IsNullOrWhiteSpace(value))
+        if (string.IsNullOrWhiteSpace(value))
         {
             throw new EmptyPasswordHashException();
         }
