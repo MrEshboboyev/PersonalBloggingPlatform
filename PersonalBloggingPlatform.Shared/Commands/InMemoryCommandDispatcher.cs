@@ -15,4 +15,13 @@ internal sealed class InMemoryCommandDispatcher(IServiceProvider serviceProvider
         var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>();
         await handler.HandleAsync(command);
     }
+
+    // New method to dispatch commands that return a result
+    public async Task<TResult> DispatchAsync<TCommand, TResult>(TCommand command)
+        where TCommand : class, ICommand<TResult>
+    {
+        using var scope = _serviceProvider.CreateScope();
+        var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<TCommand, TResult>>();
+        return await handler.HandleAsync(command);
+    }
 }
