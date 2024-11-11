@@ -24,7 +24,7 @@ public class AuthenticateUserHandler(IUserRepository userRepository,
             throw new InvalidCredentialException();
         }
 
-        List<string> roles = user.Roles.Select(x => x.Name.ToString()).ToList();
+        List<string> roles = user.Roles.Select(x => x.Name.Value).ToList();
 
         return _jwtProvider.GenerateJwtToken(user.Id, roles);
     }

@@ -17,7 +17,7 @@ internal class PostgresUserRepository(WriteDbContext writeDbContext) : IUserRepo
 
 
     public Task<User> GetByUsernameAsync(string username)
-        => _users.SingleOrDefaultAsync(t => t.Username == username);
+        => _users.Include(u => u.Roles).SingleOrDefaultAsync(t => t.Username == username);
 
     public async Task AddAsync(User user)
     {
