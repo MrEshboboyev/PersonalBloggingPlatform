@@ -5,12 +5,12 @@ using PersonalBloggingPlatform.Application.DTO;
 using PersonalBloggingPlatform.Application.Queries;
 using PersonalBloggingPlatform.Shared.Abstractions.Commands;
 using PersonalBloggingPlatform.Shared.Abstractions.Queries;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.API.Controllers;
 
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class BlogPostController(ICommandDispatcher commandDispatcher, 
@@ -19,6 +19,7 @@ public class BlogPostController(ICommandDispatcher commandDispatcher,
     private readonly ICommandDispatcher _commandDispatcher = commandDispatcher;
     private readonly IQueryDispatcher _queryDispatcher = queryDispatcher;
 
+    [AllowAnonymous]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<BlogPostDto>> Get([FromRoute] GetBlogPost query)
     {
@@ -27,6 +28,7 @@ public class BlogPostController(ICommandDispatcher commandDispatcher,
         return OkOrNotFound(result);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<BlogPostDto>>> Get([FromQuery] SearchBlogPosts query)
     {

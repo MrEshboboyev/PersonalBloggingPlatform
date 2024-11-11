@@ -9,11 +9,13 @@ using System.Threading.Tasks;
 namespace PersonalBloggingPlatform.Application.Commands.Handlers;
 
 internal class RegisterUserHandler(IUserRepository userRepository,
+    IRoleRepository roleRepository,
     IUserFactory userFactory,
     IPasswordHasher passwordHasher,
     IRoleFactory roleFactory) : ICommandHandler<RegisterUser>
 {
     private readonly IUserRepository _userRepository = userRepository;
+    private readonly IRoleRepository _roleRepository = roleRepository;
     private readonly IUserFactory _userFactory = userFactory;
     private readonly IRoleFactory _roleFactory = roleFactory;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
@@ -32,10 +34,10 @@ internal class RegisterUserHandler(IUserRepository userRepository,
         var passwordHash = _passwordHasher.Hash(password);
         var user = _userFactory.Create(username, email, passwordHash);
 
-        //// add "Reader" role for new user 
-        //var role = _roleFactory.Create(new RoleName(SD.Role_Reader));
+        // add "Reader" role for new user 
+        var role = await _roleRepository.GetByNameAsync("Reader");
 
-        //user.AddRole(role);
+        user.AddRole(role);
 
         await _userRepository.AddAsync(user);
     }

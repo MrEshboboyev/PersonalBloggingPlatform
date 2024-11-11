@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PersonalBloggingPlatform.Application.Commands;
 using PersonalBloggingPlatform.Application.DTO;
 using PersonalBloggingPlatform.Application.Queries;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.API.Controllers;
 
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class TagController(ICommandDispatcher commandDispatcher, 
@@ -17,6 +19,7 @@ public class TagController(ICommandDispatcher commandDispatcher,
     private readonly ICommandDispatcher _commandDispatcher = commandDispatcher;
     private readonly IQueryDispatcher _queryDispatcher = queryDispatcher;
 
+    [AllowAnonymous]
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<TagDto>> Get([FromRoute] GetTag query)
     {
@@ -25,6 +28,7 @@ public class TagController(ICommandDispatcher commandDispatcher,
         return OkOrNotFound(result);
     }
 
+    [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TagDto>>> Get([FromQuery] SearchTags query)
     {
