@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PersonalBloggingPlatform.Application.Commands;
 using PersonalBloggingPlatform.Application.DTO;
 using PersonalBloggingPlatform.Application.Queries;

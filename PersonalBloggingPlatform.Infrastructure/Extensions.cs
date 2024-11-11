@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PersonalBloggingPlatform.Infrastructure.Auth;
-using PersonalBloggingPlatform.Infrastructure.Configuration;
 using PersonalBloggingPlatform.Infrastructure.EF;
 using PersonalBloggingPlatform.Infrastructure.Logging;
+using PersonalBloggingPlatform.Infrastructure.Seeding;
 using PersonalBloggingPlatform.Shared.Abstractions.Auth;
 using PersonalBloggingPlatform.Shared.Abstractions.Commands;
 using PersonalBloggingPlatform.Shared.Queries;
@@ -23,6 +23,9 @@ public static class Extensions
 
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<IPasswordHasher, PasswordHasher>();
+
+        // Register DatabaseSeeder for seeding roles and admin user
+        services.AddScoped<DatabaseSeeder>();
 
         return services;
     }

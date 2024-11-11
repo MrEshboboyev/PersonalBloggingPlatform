@@ -4,7 +4,7 @@ using PersonalBloggingPlatform.Infrastructure.EF.Config;
 
 namespace PersonalBloggingPlatform.Infrastructure.EF.Contexts;
 
-internal sealed class WriteDbContext(DbContextOptions<WriteDbContext> options) : DbContext(options)
+public sealed class WriteDbContext(DbContextOptions<WriteDbContext> options) : DbContext(options)
 {
     public DbSet<BlogPost> BlogPosts { get; set; }
     public DbSet<Tag> Tags { get; set; }

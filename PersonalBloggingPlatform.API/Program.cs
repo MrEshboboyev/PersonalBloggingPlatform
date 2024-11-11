@@ -1,14 +1,11 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using PersonalBloggingPlatform.Application;
 using PersonalBloggingPlatform.Infrastructure;
 using PersonalBloggingPlatform.Infrastructure.Configuration;
+using PersonalBloggingPlatform.Infrastructure.Seeding;
 using PersonalBloggingPlatform.Shared;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,27 +17,10 @@ builder.Services.AddOpenApi();
 
 
 // add JwtOptions configuring
-builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("JwtOptions"));
+builder.Services.Configure<JwtOptions>(
+    builder.Configuration.GetSection("JwtOptions"));
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    var jwtSettings = builder.Configuration.GetSection("JwtOptions").Get<JwtOptions>();
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings.Issuer,
-        ValidAudience = jwtSettings.Audience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey))
-    };
-});
-
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -57,5 +37,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+await app.SeedAsync();
 app.Run();
