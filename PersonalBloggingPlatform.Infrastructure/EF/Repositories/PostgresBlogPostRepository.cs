@@ -15,6 +15,7 @@ internal sealed class PostgresBlogPostRepository(WriteDbContext writeDbContext) 
     public Task<BlogPost> GetAsync(Guid id)
         => _blogPosts
             .Include(bp => bp.Tags)
+            .Include(bp => bp.Comments)
             .SingleOrDefaultAsync(bp => bp.Id == id);
 
     public async Task CreateAsync(BlogPost blogPost)
