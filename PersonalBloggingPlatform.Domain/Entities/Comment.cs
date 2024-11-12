@@ -24,14 +24,13 @@ public class Comment : AggregateRoot<Guid>
     // Private constructor for ORM support
     private Comment() { }
 
-    internal Comment(CommentContent content, Guid userId, Guid blogPostId, DateTime lastModified)
+    internal Comment(Guid blogPostId, Guid userId, CommentContent content)
     {
         Id = Guid.NewGuid();
         _content = content;
         _userId = userId;
         _blogPostId = blogPostId;
         _createdAt = DateTime.UtcNow;
-        _lastModified = lastModified;
 
         // Raise the CommentCreated event
         AddEvent(new CommentCreated(this));

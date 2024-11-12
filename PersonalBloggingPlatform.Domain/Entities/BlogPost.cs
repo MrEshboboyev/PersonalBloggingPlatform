@@ -99,18 +99,28 @@ public class BlogPost : AggregateRoot<Guid>
     #endregion
 
     #region Comment
-    public void AddComment(Comment comment)
+    // Method to add a comment to the blog post
+    public void AddComment(Guid userId, string content)
     {
+        var comment = new Comment(this.Id, userId, content);
         _comments.Add(comment);
-
+        // Raise CommentAdded domain event, if necessary
         AddEvent(new CommentAddedToBlogPost(this, comment));
     }
 
-    public void RemoveComment(Comment Comment)
+    // Method to remove a comment from the blog post
+    public void RemoveComment(Guid commentId, Guid requestingUserId)
     {
-        var comment = GetComment(Comment.Id);
-        _comments.Remove(comment);
+        var comment = GetComment(commentId);
 
+        // Enforce permissions, e.g., only the author or an admin can delete
+        if (comment.UserId != requestingUserId)
+        {
+            throw new UnauthorizedAccessException("Only the author can delete their comment.");
+        }
+
+        _comments.Remove(comment);
+        // Raise CommentRemoved domain event, if necessary
         AddEvent(new CommentRemovedFromBlogPost(this, comment));
     }
 
