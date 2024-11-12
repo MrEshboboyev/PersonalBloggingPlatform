@@ -13,4 +13,8 @@
     <ProjectReference Include="..\PersonalBloggingPlatform.Shared\PersonalBloggingPlatform.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="D:\Backend\roadmap.sh\Backend_Project_Ideas\PersonalBloggingPlatform\PersonalBloggingPlatform.Application\DTO\.editorconfig" />
+  </ItemGroup>
+
 </Project>
