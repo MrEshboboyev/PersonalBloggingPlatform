@@ -44,6 +44,10 @@ internal static class Extensions
         => new()
         {
             Id = readModel.Id,
-            Content = readModel?.Content
+            Content = readModel?.Content,
+            BlogPostId = readModel.BlogPostId,
+            UserId = readModel.UserId,
+            CreatedAt = readModel.CreatedAt,
+            LastModified = readModel.LastModified
         };
 }

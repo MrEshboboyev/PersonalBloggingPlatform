@@ -5,7 +5,6 @@ using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 
 namespace PersonalBloggingPlatform.Domain.Entities;
 
@@ -95,41 +94,6 @@ public class BlogPost : AggregateRoot<Guid>
     {
         _categoryId = categoryId;
         AddEvent(new BlogPostCategoryChanged(this, categoryId));
-    }
-    #endregion
-
-    #region Comment
-    // Method to add a comment to the blog post
-    public void AddComment(Guid userId, string content)
-    {
-        var comment = new Comment(this.Id, userId, content);
-        _comments.Add(comment);
-        // Raise CommentAdded domain event, if necessary
-        AddEvent(new CommentAddedToBlogPost(this, comment));
-    }
-
-    // Method to remove a comment from the blog post
-    public void RemoveComment(Guid commentId, Guid requestingUserId)
-    {
-        var comment = GetComment(commentId);
-
-        // Enforce permissions, e.g., only the author or an admin can delete
-        if (comment.UserId != requestingUserId)
-        {
-            throw new UnauthorizedAccessException("Only the author can delete their comment.");
-        }
-
-        _comments.Remove(comment);
-        // Raise CommentRemoved domain event, if necessary
-        AddEvent(new CommentRemovedFromBlogPost(this, comment));
-    }
-
-    private Comment GetComment(Guid commentId)
-    {
-        var comment = _comments.Find(c => c.Id == commentId)
-            ?? throw new BlogPostCommentNotFoundException(commentId);
-
-        return comment;
     }
     #endregion
 }

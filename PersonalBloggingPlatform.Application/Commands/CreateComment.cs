@@ -3,4 +3,4 @@ using System;
 
 namespace PersonalBloggingPlatform.Application.Commands;
 
-public record class AddComment(string Content, Guid UserId, Guid BlogPostId) : ICommand;
+public record class CreateComment(string Content, Guid UserId, Guid BlogPostId) : ICommand;

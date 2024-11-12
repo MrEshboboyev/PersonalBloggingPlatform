@@ -6,19 +6,23 @@ using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.Application.Commands.Handlers;
 
-public class AddCommentHandler(IBlogPostRepository blogPostRepository) : ICommandHandler<AddComment>
+public class CreateCommentHandler(IBlogPostRepository blogPostRepository,
+    ICommentRepository commentRepository,
+    ICommentFactory commentFactory) : ICommandHandler<CreateComment>
 {
     private readonly IBlogPostRepository _blogPostRepository = blogPostRepository;
+    private readonly ICommentRepository _commentRepository = commentRepository;
+    private readonly ICommentFactory _commentFactory = commentFactory;
 
-    public async Task HandleAsync(AddComment command)
+    public async Task HandleAsync(CreateComment command)
     {
         var (content, blogPostId, userId) = command;
 
         var blogPost = await _blogPostRepository.GetAsync(blogPostId)
             ?? throw new BlogPostNotFoundException(blogPostId);
 
-        blogPost.AddComment(userId, content);
+        var comment = _commentFactory.Create(blogPostId, userId, content);
 
-        await _blogPostRepository.UpdateAsync(blogPost);
+        await _commentRepository.CreateAsync(comment);
     }
 }

@@ -33,15 +33,16 @@ public class CommentController(ICommandDispatcher commandDispatcher,
     [HttpPost]
     public async Task<IActionResult> Post(AddCommentRequest request)
     {
-        AddComment command = new(request.Content, request.BlogPostId, GetUserId());
+        CreateComment command = new(request.Content, request.BlogPostId, GetUserId());
         await _commandDispatcher.DispatchAsync(command);
 
         return Ok();
     }
 
     [HttpDelete]
-    public async Task<IActionResult> Delete(RemoveComment command)
+    public async Task<IActionResult> Delete(DeleteCommentRequest request)
     {
+        DeleteComment command = new(GetUserId(), request.CommentId);
         await _commandDispatcher.DispatchAsync(command);
 
         return Ok();
