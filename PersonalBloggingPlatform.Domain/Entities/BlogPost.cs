@@ -5,6 +5,7 @@ using PersonalBloggingPlatform.Shared.Abstractions.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 namespace PersonalBloggingPlatform.Domain.Entities;
 
@@ -17,6 +18,7 @@ public class BlogPost : AggregateRoot<Guid>
 
     private readonly List<Tag> _tags = [];
     private CategoryId _categoryId;
+    private readonly List<Comment> _comments = [];
 
     // Public getters for properties
     public PostTitle Title => _title;
@@ -25,6 +27,7 @@ public class BlogPost : AggregateRoot<Guid>
     public DateTime LastModified => _lastModified;
     public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
     public CategoryId CategoryId => _categoryId;
+    public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
 
     // Private constructor for ORM support
     private BlogPost() { }
@@ -57,6 +60,7 @@ public class BlogPost : AggregateRoot<Guid>
         AddEvent(new BlogPostUpdated(this));
     }
 
+    #region Tag
     public void AddTag(Tag tag)
     {
         var alreadyExists = _tags.Contains(tag);
@@ -84,10 +88,38 @@ public class BlogPost : AggregateRoot<Guid>
 
         return tag;
     }
+    #endregion
 
+    #region Category
     public void ChangeCategory(CategoryId categoryId)
     {
         _categoryId = categoryId;
         AddEvent(new BlogPostCategoryChanged(this, categoryId));
     }
+    #endregion
+
+    #region Comment
+    public void AddComment(Comment comment)
+    {
+        _comments.Add(comment);
+
+        AddEvent(new CommentAddedToBlogPost(this, comment));
+    }
+
+    public void RemoveComment(Comment Comment)
+    {
+        var comment = GetComment(Comment.Id);
+        _comments.Remove(comment);
+
+        AddEvent(new CommentRemovedFromBlogPost(this, comment));
+    }
+
+    private Comment GetComment(Guid commentId)
+    {
+        var comment = _comments.Find(c => c.Id == commentId)
+            ?? throw new BlogPostCommentNotFoundException(commentId);
+
+        return comment;
+    }
+    #endregion
 }
