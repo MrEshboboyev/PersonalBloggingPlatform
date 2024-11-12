@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace PersonalBloggingPlatform.Application.Commands.Handlers;
 
-public class AddCommentHandler(IBlogPostRepository blogPostRepository,
-    ICommentFactory commentFactory) : ICommandHandler<AddComment>
+public class AddCommentHandler(IBlogPostRepository blogPostRepository) : ICommandHandler<AddComment>
 {
     private readonly IBlogPostRepository _blogPostRepository = blogPostRepository;
-    private readonly ICommentFactory _commentFactory = commentFactory;
 
     public async Task HandleAsync(AddComment command)
     {

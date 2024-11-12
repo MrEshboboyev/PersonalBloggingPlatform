@@ -14,5 +14,6 @@ public class BlogPostReadModel
     public Guid CategoryId { get; set; }
     public CategoryReadModel Category { get; set; }
     public ICollection<TagReadModel> Tags { get; set; } = [];
+    public ICollection<CommentReadModel> Comments { get; set; } = [];
 }
 

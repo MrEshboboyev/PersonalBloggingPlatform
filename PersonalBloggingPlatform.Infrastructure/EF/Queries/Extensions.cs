@@ -39,4 +39,11 @@ internal static class Extensions
             Id = readModel.Id,
             Name = readModel?.Name
         };
+
+    public static CommentDto AsDto(this CommentReadModel readModel)
+        => new()
+        {
+            Id = readModel.Id,
+            Content = readModel?.Content
+        };
 }

@@ -22,6 +22,7 @@ internal static class Extensions
         services.AddScoped<ICategoryRepository, PostgresCategoryRepository>();
         services.AddScoped<IUserRepository, PostgresUserRepository>();
         services.AddScoped<IRoleRepository, PostgresRoleRepository>();
+        services.AddScoped<ICommentRepository, PostgresCommentRepository>();
         services.AddScoped<IBlogPostReadService, PostgresBlogPostReadService>();
         services.AddScoped<ITagReadService, PostgresTagReadService>();
         services.AddScoped<ICategoryReadService, PostgresCategoryReadService>();

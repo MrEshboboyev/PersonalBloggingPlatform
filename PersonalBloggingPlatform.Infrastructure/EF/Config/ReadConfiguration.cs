@@ -10,7 +10,8 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
                                           IEntityTypeConfiguration<TagReadModel>,
                                           IEntityTypeConfiguration<CategoryReadModel>,
                                           IEntityTypeConfiguration<UserReadModel>,
-                                          IEntityTypeConfiguration<RoleReadModel>
+                                          IEntityTypeConfiguration<RoleReadModel>,
+                                          IEntityTypeConfiguration<CommentReadModel>
 {
     public void Configure(EntityTypeBuilder<BlogPostReadModel> builder)
     {
@@ -76,5 +77,42 @@ internal sealed class ReadConfiguration : IEntityTypeConfiguration<BlogPostReadM
     {
         builder.ToTable("Roles");
         builder.HasKey(r => r.Id);
+    }
+
+    public void Configure(EntityTypeBuilder<CommentReadModel> builder)
+    {
+        // Configure Comments table
+        builder.ToTable("Comments");
+        builder.HasKey(c => c.Id);
+
+        builder.Property(c => c.Content)
+               .HasColumnName("Content")
+               .IsRequired();
+
+        builder.Property(c => c.CreatedAt)
+               .HasColumnName("CreatedAt")
+               .IsRequired();
+
+        builder.Property(c => c.LastModified)
+               .HasColumnName("LastModified");
+
+        builder.Property(c => c.UserId)
+               .HasColumnName("UserId")
+               .IsRequired();
+
+        builder.Property(c => c.BlogPostId)
+               .HasColumnName("BlogPostId")
+               .IsRequired();
+
+        // Relationships
+        builder.HasOne(c => c.User)
+               .WithMany()
+               .HasForeignKey(c => c.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(c => c.BlogPost)
+               .WithMany(bp => bp.Comments) 
+               .HasForeignKey(c => c.BlogPostId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

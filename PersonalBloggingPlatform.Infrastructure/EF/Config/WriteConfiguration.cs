@@ -12,7 +12,8 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<BlogPost>,
                                            IEntityTypeConfiguration<Tag>,
                                            IEntityTypeConfiguration<Category>,
                                            IEntityTypeConfiguration<User>,
-                                           IEntityTypeConfiguration<Role>
+                                           IEntityTypeConfiguration<Role>,
+                                           IEntityTypeConfiguration<Comment>
 {
     public void Configure(EntityTypeBuilder<BlogPost> builder)
     {
@@ -171,5 +172,49 @@ internal sealed class WriteConfiguration : IEntityTypeConfiguration<BlogPost>,
             .HasConversion(roleNameConverter)
             .HasColumnName("Name")
             .IsRequired();
+    }
+
+    public void Configure(EntityTypeBuilder<Comment> builder)
+    {
+        // Configure Comments table
+        builder.ToTable("Comments");
+        builder.HasKey(c => c.Id);
+
+        // Configure properties
+        var commentContentConverter = new ValueConverter<CommentContent, string>(
+            cc => cc.Value,
+            cc => new CommentContent(cc)
+        );
+
+        builder.Property(c => c.Content)
+            .HasConversion(commentContentConverter)
+            .HasColumnName("Content")
+            .IsRequired();
+
+        builder.Property(c => c.CreatedAt)
+            .HasColumnName("CreatedAt")
+            .IsRequired();
+
+        builder.Property(c => c.LastModified)
+            .HasColumnName("LastModified");
+
+        builder.Property(c => c.UserId)
+            .HasColumnName("UserId")
+            .IsRequired();
+
+        builder.Property(c => c.BlogPostId)
+            .HasColumnName("BlogPostId")
+            .IsRequired();
+
+        // Configure relationships
+        builder.HasOne<User>()
+               .WithMany()
+               .HasForeignKey(c => c.UserId)
+               .OnDelete(DeleteBehavior.Cascade); // Delete comments if the user is deleted
+
+        builder.HasOne<BlogPost>()
+               .WithMany(bp => bp.Comments) // Assuming BlogPost has a Comments collection
+               .HasForeignKey(c => c.BlogPostId)
+               .OnDelete(DeleteBehavior.Cascade); // Delete comments if the blog post is deleted
     }
 }

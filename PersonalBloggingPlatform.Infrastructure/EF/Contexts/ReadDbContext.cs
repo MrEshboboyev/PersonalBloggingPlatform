@@ -11,6 +11,7 @@ public sealed class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbC
     public DbSet<CategoryReadModel> Categories { get; set; }
     public DbSet<UserReadModel> Users { get; set; }
     public DbSet<RoleReadModel> Roles { get; set; }
+    public DbSet<CommentReadModel> Comments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,6 +24,7 @@ public sealed class ReadDbContext(DbContextOptions<ReadDbContext> options) : DbC
         modelBuilder.ApplyConfiguration<CategoryReadModel>(configuration);
         modelBuilder.ApplyConfiguration<UserReadModel>(configuration);
         modelBuilder.ApplyConfiguration<RoleReadModel>(configuration);
+        modelBuilder.ApplyConfiguration<CommentReadModel>(configuration);
 
         base.OnModelCreating(modelBuilder);
     }

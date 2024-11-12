@@ -11,6 +11,7 @@ public sealed class WriteDbContext(DbContextOptions<WriteDbContext> options) : D
     public DbSet<Category> Categories { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Role> Roles { get; set; }
+    public DbSet<Comment> Comments { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -23,6 +24,7 @@ public sealed class WriteDbContext(DbContextOptions<WriteDbContext> options) : D
         modelBuilder.ApplyConfiguration<Category>(configuration);
         modelBuilder.ApplyConfiguration<User>(configuration);
         modelBuilder.ApplyConfiguration<Role>(configuration);
+        modelBuilder.ApplyConfiguration<Comment>(configuration);
 
         base.OnModelCreating(modelBuilder);
     }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace PersonalBloggingPlatform.Infrastructure.EF.Queries.Handlers;
 
 internal sealed class GetCommentsForBlogPostHandler(ReadDbContext context)
-    : IQueryHandler<GetCommentsForBlogPost, IEnumerable<CommentDTO>>
+    : IQueryHandler<GetCommentsForBlogPost, IEnumerable<CommentDto>>
 {
     private readonly DbSet<CommentReadModel> _comments = context.Comments;
 
