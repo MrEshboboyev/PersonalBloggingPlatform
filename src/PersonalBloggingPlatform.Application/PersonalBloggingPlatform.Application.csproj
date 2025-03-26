@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\PersonalBloggingPlatform.Domain\PersonalBloggingPlatform.Domain.csproj" />
+		<ProjectReference Include="..\Shared\PersonalBloggingPlatform.Shared\PersonalBloggingPlatform.Shared.csproj" />
+	</ItemGroup>
+
+</Project>

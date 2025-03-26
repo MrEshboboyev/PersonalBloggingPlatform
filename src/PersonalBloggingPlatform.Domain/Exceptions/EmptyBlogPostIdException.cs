@@ -2,6 +2,6 @@
 
 namespace PersonalBloggingPlatform.Domain.Exceptions;
 
-public class EmptyBlogPostIdException(string message) : DomainException("Blog Post Id cannot be empty!")
+public class EmptyBlogPostIdException() : DomainException("Blog Post Id cannot be empty!")
 {
 }
